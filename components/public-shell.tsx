@@ -11,10 +11,10 @@ type PublicShellProps = {
 };
 
 const links = [
-  { href: "/", label: "首页" },
-  { href: "/portfolio", label: "专业成就" },
-  { href: "/blog", label: "深度见解" },
-  { href: "/life", label: "个人特质" }
+  { href: "/", label: "home" },
+  { href: "/portfolio", label: "projects" },
+  { href: "/blog", label: "blog" },
+  { href: "/life", label: "about me" }
 ];
 
 export function PublicShell({

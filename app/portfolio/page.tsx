@@ -19,7 +19,7 @@ export default async function PortfolioPage() {
     >
       <section className="card surface p-6 md:p-8">
         <p className="chip">专业成就</p>
-        <h1 className="hero-title mt-3">科研与项目沉淀</h1>
+        <h1 className="hero-title mt-3">科研与项目</h1>
         <p className="mt-3 max-w-3xl text-slate-600">{settings.portfolioIntroText}</p>
       </section>
 

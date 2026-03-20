@@ -30,7 +30,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         <div className="flex flex-wrap items-center gap-2 text-xs">
           <span className="chip">{post.category || "未分类"}</span>
           <span className="tag">{formatDate(post.publishedAt)}</span>
-          <span className="tag">{post.readingTimeMinutes} 分钟阅读</span>
+          <span className="tag">{post.readingTimeMinutes} 分钟/阅读时间</span>
         </div>
         <h1 className="hero-title mt-4">{post.title}</h1>
 

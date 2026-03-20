@@ -1,4 +1,4 @@
-const AUTH_COOKIE = "admin_session";
+﻿const AUTH_COOKIE = process.env.NODE_ENV === "production" ? "__Host-admin_session" : "admin_session";
 const TOKEN_TTL_SECONDS = 60 * 60 * 12;
 
 type TokenPayload = {
@@ -8,7 +8,16 @@ type TokenPayload = {
 };
 
 function getSecretBytes() {
-  return new TextEncoder().encode(process.env.AUTH_SECRET || "change-me-in-env");
+  const secret = process.env.AUTH_SECRET;
+
+  if (!secret || secret.trim().length < 32) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("AUTH_SECRET is required and must be at least 32 characters in production");
+    }
+    return new TextEncoder().encode("dev-only-insecure-auth-secret-change-me");
+  }
+
+  return new TextEncoder().encode(secret);
 }
 
 function toBinary(bytes: Uint8Array) {

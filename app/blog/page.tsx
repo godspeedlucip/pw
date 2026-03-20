@@ -18,8 +18,8 @@ export default async function BlogPage() {
       footerIntroText={settings.footerIntroText}
     >
       <section className="card surface p-6 md:p-8">
-        <p className="chip">深度见解</p>
-        <h1 className="hero-title mt-3">技术与行业思考</h1>
+        <p className="chip">我的博客</p>
+        <h1 className="hero-title mt-3">技术博客</h1>
         <p className="mt-3 text-slate-600">{settings.blogIntroText}</p>
       </section>
 
@@ -33,7 +33,7 @@ export default async function BlogPage() {
               <div className="flex flex-wrap items-center gap-2 text-xs">
                 <span className="chip">{post.category || "未分类"}</span>
                 <span className="tag">{formatDate(post.publishedAt)}</span>
-                <span className="tag">{post.readingTimeMinutes} 分钟阅读</span>
+                <span className="tag">{post.readingTimeMinutes} 分钟/阅读时间</span>
               </div>
               <h2 className="mt-4 text-2xl font-semibold text-slate-900">{post.title}</h2>
               <p className="mt-3 text-slate-700">{post.excerpt}</p>

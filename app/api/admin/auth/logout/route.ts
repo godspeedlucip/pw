@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { authConfig } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -8,9 +8,10 @@ export async function POST() {
   response.cookies.set(authConfig.cookieName, "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "strict",
     path: "/",
     maxAge: 0
   });
   return response;
 }
+
