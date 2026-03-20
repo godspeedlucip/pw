@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ResearchEntry {
+  id              String   @id @default(cuid())
+  title           String
+  role            String?
+  dateRange       String?
+  summary         String?
+  publications    Json     @default("[]")
+  resultVisualUrl String?
+  externalUrl     String?
+  tools           Json     @default("[]")
+  keywords        Json     @default("[]")
+  isFeatured      Boolean  @default(false)
+  sortOrder       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ProjectEntry {
+  id               String   @id @default(cuid())
+  title            String
+  context          String?
+  starSituation    String?
+  starTask         String?
+  starAction       String?
+  starResult       String?
+  markdownContent  String?
+  detailBlogPostId String?
+  detailBlogSlug   String?
+  techStack        Json     @default("[]")
+  githubUrl        String?
+  demoUrl          String?
+  externalUrl      String?
+  coverImageUrl    String?
+  isFeatured       Boolean  @default(false)
+  sortOrder        Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model BlogPost {
+  id                 String   @id @default(cuid())
+  title              String
+  slug               String   @unique
+  excerpt            String?
+  category           String?
+  coverImageUrl      String?
+  tags               Json     @default("[]")
+  markdownBody       String
+  latexEnabled       Boolean  @default(true)
+  readingTimeMinutes Int      @default(1)
+  status             String   @default("draft")
+  publishedAt        DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model LifeContent {
+  id            String   @id @default(cuid())
+  aboutIntro    String?
+  galleryImages Json     @default("[]")
+  readingList   Json     @default("[]")
+  footprints    Json     @default("[]")
+  skills        Json     @default("[]")
+  lifeSections  Json     @default("[]")
+  resumeFileUrl String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model SiteSettings {
+  id                    String   @id @default(cuid())
+  siteTitle             String   @default("Personal Site")
+  heroSlogan            String?
+  heroImageUrl          String?
+  resumeFileUrl         String?
+  homeIntroText         String?
+  homeValueText         String?
+  homeDescriptions      Json     @default("[]")
+  portfolioIntroText    String?
+  blogIntroText         String?
+  lifeIntroText         String?
+  footerIntroText       String?
+  currentStatus         String?
+  contactEmail          String?
+  linkedinUrl           String?
+  githubUrl             String?
+  footerCtaText         String?
+  seoDefaultDescription String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model MediaAsset {
+  id         String   @id @default(cuid())
+  fileName   String
+  fileUrl    String
+  assetType  String
+  mimeType   String?
+  fileSize   BigInt?
+  usageCount Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

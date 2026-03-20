@@ -1,0 +1,12 @@
+# 忽略依赖库
+node_modules/
+
+# 忽略本地环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.next
+
+# 注意：不要忽略 .env.example，它是用来给其他开发者参考的模板
