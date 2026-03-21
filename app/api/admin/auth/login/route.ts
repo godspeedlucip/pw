@@ -1,10 +1,14 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { authConfig, signAuthToken } from "@/lib/auth";
 import { clearLoginFailures, checkLoginRateLimit, registerLoginFailure } from "@/lib/rate-limit";
 import { verifyAdminPassword } from "@/lib/password";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
+
+function isHttpsEnforced() {
+  return process.env.NODE_ENV === "production" && process.env.FORCE_HTTPS === "true";
+}
 
 function getClientIp(req: Request) {
   const xff = req.headers.get("x-forwarded-for");
@@ -57,7 +61,7 @@ export async function POST(req: Request) {
   const response = NextResponse.json({ ok: true });
   response.cookies.set(authConfig.cookieName, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isHttpsEnforced(),
     sameSite: "strict",
     path: "/",
     maxAge: authConfig.maxAge

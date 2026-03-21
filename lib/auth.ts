@@ -1,4 +1,6 @@
-﻿const AUTH_COOKIE = process.env.NODE_ENV === "production" ? "__Host-admin_session" : "admin_session";
+const IS_HTTPS_ENFORCED =
+  process.env.NODE_ENV === "production" && process.env.FORCE_HTTPS === "true";
+const AUTH_COOKIE = IS_HTTPS_ENFORCED ? "__Host-admin_session" : "admin_session";
 const TOKEN_TTL_SECONDS = 60 * 60 * 12;
 
 type TokenPayload = {
@@ -124,3 +126,4 @@ export async function verifyAuthToken(token: string) {
 
   return { email: payload.email };
 }
+
