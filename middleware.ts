@@ -11,8 +11,13 @@ function isProduction() {
   return process.env.NODE_ENV === "production";
 }
 
+function isHttpsEnforced() {
+  return process.env.FORCE_HTTPS === "true";
+}
+
 function shouldForceHttps(req: NextRequest) {
   if (!isProduction()) return false;
+  if (!isHttpsEnforced()) return false;
   const forwardedProto = req.headers.get("x-forwarded-proto");
   if (forwardedProto) {
     return forwardedProto !== "https";
@@ -28,7 +33,7 @@ function withSecurityHeaders(response: NextResponse) {
   response.headers.set("Cross-Origin-Opener-Policy", "same-origin");
   response.headers.set("Cross-Origin-Resource-Policy", "same-origin");
 
-  if (isProduction()) {
+  if (isProduction() && isHttpsEnforced()) {
     response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
   }
 
