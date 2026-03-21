@@ -3,45 +3,38 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: my-next-site
+    container_name: docker_personal_site_app
     restart: always
     env_file:
-      - .env.production
+      - /opt/pw-secrets/app.env
     expose:
       - "3000"
+    depends_on:
+      - postgres
     networks:
       - web
 
   nginx:
     image: nginx:1.27-alpine
-    container_name: my-next-nginx
+    container_name: docker_personal_site_nginx
     restart: always
     depends_on:
       - next-app
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
-      - certbot-www:/var/www/certbot
-      - certbot-conf:/etc/letsencrypt
     networks:
       - web
 
-  certbot:
-    image: certbot/certbot:latest
-    container_name: my-next-certbot
+  postgres:
+    image: postgres:16-alpine
+    container_name: docker_personal_site_postgres
     restart: always
+    env_file:
+      - /opt/pw-secrets/db.env
     volumes:
-      - certbot-www:/var/www/certbot
-      - certbot-conf:/etc/letsencrypt
-    entrypoint: /bin/sh -c
-    command: >
-      "trap exit TERM;
-      while :; do
-        certbot renew --webroot -w /var/www/certbot --quiet;
-        sleep 12h;
-      done"
+      - pg-data:/var/lib/postgresql/data
     networks:
       - web
 
@@ -49,5 +42,4 @@ networks:
   web:
 
 volumes:
-  certbot-www:
-  certbot-conf:
+  pg-data:
