@@ -1,0 +1,53 @@
+services:
+  next-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-next-site
+    restart: always
+    env_file:
+      - .env.production
+    expose:
+      - "3000"
+    networks:
+      - web
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: my-next-nginx
+    restart: always
+    depends_on:
+      - next-app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot-www:/var/www/certbot
+      - certbot-conf:/etc/letsencrypt
+    networks:
+      - web
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: my-next-certbot
+    restart: always
+    volumes:
+      - certbot-www:/var/www/certbot
+      - certbot-conf:/etc/letsencrypt
+    entrypoint: /bin/sh -c
+    command: >
+      "trap exit TERM;
+      while :; do
+        certbot renew --webroot -w /var/www/certbot --quiet;
+        sleep 12h;
+      done"
+    networks:
+      - web
+
+networks:
+  web:
+
+volumes:
+  certbot-www:
+  certbot-conf:
