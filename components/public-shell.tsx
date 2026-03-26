@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 type PublicShellProps = {
   siteTitle: string;
@@ -62,6 +62,11 @@ export function PublicShell({
             {githubUrl ? <a href={githubUrl} className="nav-pill bg-white">GitHub</a> : null}
           </div>
         </section>
+        <p className="mt-4 text-center text-xs text-slate-500">
+          <a href="http://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" className="hover:text-slate-700">
+            湘ICP备2026009523号
+          </a>
+        </p>
       </footer>
     </div>
   );
