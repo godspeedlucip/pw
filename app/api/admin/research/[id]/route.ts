@@ -1,6 +1,22 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { toSlug } from "@/lib/text-utils";
+
+async function ensureUniqueDetailSlug(base: string, excludeId?: string) {
+  const raw = toSlug(base) || "research-detail";
+  let slug = raw;
+  let count = 1;
+
+  while (true) {
+    const existed = await prisma.researchEntry.findFirst({ where: { detailSlug: slug } });
+    if (!existed || (excludeId && existed.id === excludeId)) {
+      return slug;
+    }
+    slug = `${raw}-${count}`;
+    count += 1;
+  }
+}
 
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   const item = await prisma.researchEntry.findUnique({ where: { id: params.id } });
@@ -12,6 +28,13 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
 
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
   const body = await req.json();
+  const existed = await prisma.researchEntry.findUnique({ where: { id: params.id } });
+  if (!existed) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  const detailSlug = await ensureUniqueDetailSlug(String(body.detailSlug || existed.detailSlug || body.title || "research-detail"), params.id);
+
   const updated = await prisma.researchEntry.update({
     where: { id: params.id },
     data: {
@@ -19,6 +42,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       role: body.role || null,
       dateRange: body.dateRange || null,
       summary: body.summary || null,
+      detailSlug,
       publications: Array.isArray(body.publications) ? body.publications : [],
       resultVisualUrl: body.resultVisualUrl || null,
       externalUrl: body.externalUrl || null,

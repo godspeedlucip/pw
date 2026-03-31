@@ -18,6 +18,21 @@ async function ensureUniqueSlug(base: string, excludeId?: string) {
   }
 }
 
+async function ensureUniqueDetailSlug(base: string, excludeId?: string) {
+  const raw = toSlug(base) || "project-detail";
+  let slug = raw;
+  let count = 1;
+
+  while (true) {
+    const existed = await prisma.projectEntry.findFirst({ where: { detailSlug: slug } });
+    if (!existed || (excludeId && existed.id === excludeId)) {
+      return slug;
+    }
+    slug = `${raw}-${count}`;
+    count += 1;
+  }
+}
+
 async function syncProjectBlog(project: any, body: any) {
   const markdownContent = String(body.markdownContent || "").trim();
 
@@ -29,7 +44,8 @@ async function syncProjectBlog(project: any, body: any) {
   }
 
   const title = String(body.title || "Project Detail").trim();
-  const targetSlug = await ensureUniqueSlug(`project-${title}`, project.detailBlogPostId || undefined);
+  const preferredBlogSlug = String(body.detailBlogSlug || `project-${title}`);
+  const targetSlug = await ensureUniqueSlug(preferredBlogSlug, project.detailBlogPostId || undefined);
 
   if (project.detailBlogPostId) {
     const updated = await prisma.blogPost.update({
@@ -87,6 +103,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   }
 
   const blog = await syncProjectBlog(existed, body);
+  const detailSlug = await ensureUniqueDetailSlug(String(body.detailSlug || existed.detailSlug || body.title || "project-detail"), params.id);
 
   const updated = await prisma.projectEntry.update({
     where: { id: params.id },
@@ -98,6 +115,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
       starAction: body.starAction || null,
       starResult: body.starResult || null,
       markdownContent: body.markdownContent || null,
+      detailSlug,
       detailBlogPostId: blog.detailBlogPostId,
       detailBlogSlug: blog.detailBlogSlug,
       techStack: Array.isArray(body.techStack) ? body.techStack : [],

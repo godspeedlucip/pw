@@ -13,6 +13,7 @@ model ResearchEntry {
   role            String?
   dateRange       String?
   summary         String?
+  detailSlug      String?  @unique
   publications    Json     @default("[]")
   resultVisualUrl String?
   externalUrl     String?
@@ -33,6 +34,7 @@ model ProjectEntry {
   starAction       String?
   starResult       String?
   markdownContent  String?
+  detailSlug       String?   @unique
   detailBlogPostId String?
   detailBlogSlug   String?
   techStack        Json     @default("[]")

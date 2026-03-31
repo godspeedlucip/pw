@@ -285,7 +285,7 @@ export async function getLifeData() {
 export async function getResearchById(id: string) {
   try {
     const [research, media] = await Promise.all([
-      prisma.researchEntry.findUnique({ where: { id } }),
+      prisma.researchEntry.findFirst({ where: { OR: [{ id }, { detailSlug: id }] } }),
       getAllMedia()
     ]);
     if (!research) return null;
@@ -302,7 +302,7 @@ export async function getResearchById(id: string) {
 export async function getProjectById(id: string) {
   try {
     const [project, media] = await Promise.all([
-      prisma.projectEntry.findUnique({ where: { id } }),
+      prisma.projectEntry.findFirst({ where: { OR: [{ id }, { detailSlug: id }] } }),
       getAllMedia()
     ]);
     if (!project) return null;

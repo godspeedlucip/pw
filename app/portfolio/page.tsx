@@ -44,7 +44,7 @@ export default async function PortfolioPage() {
                   {asStringArray(item.keywords).map((keyword) => <span key={keyword} className="tag">{keyword}</span>)}
                 </div>
                 <p className="mt-3 text-xs text-slate-500">工具：{asStringArray(item.tools).join(", ") || "暂无"}</p>
-                <Link href={`/portfolio/research/${item.id}`} className="mt-4 inline-flex nav-pill bg-white text-brand-700">查看详情</Link>
+                <Link href={`/portfolio/research/${item.detailSlug || item.id}`} className="mt-4 inline-flex nav-pill bg-white text-brand-700">查看详情</Link>
               </div>
             </article>
           ))}
@@ -70,7 +70,7 @@ export default async function PortfolioPage() {
                   {asStringArray(item.techStack).map((tech) => <span key={tech} className="tag">{tech}</span>)}
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <Link href={`/portfolio/projects/${item.id}`} className="inline-flex nav-pill bg-white text-brand-700">
+                  <Link href={`/portfolio/projects/${item.detailSlug || item.id}`} className="inline-flex nav-pill bg-white text-brand-700">
                     查看详情
                   </Link>
                   {item.detailBlogSlug ? (

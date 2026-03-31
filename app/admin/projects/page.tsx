@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { FormEvent, useEffect, useState } from "react";
 import { csvToList, listToCsv } from "@/lib/crud-helpers";
@@ -13,6 +13,7 @@ type ProjectItem = {
   starAction: string | null;
   starResult: string | null;
   markdownContent: string | null;
+  detailSlug: string | null;
   detailBlogSlug: string | null;
   techStack: string[];
   githubUrl: string | null;
@@ -30,6 +31,7 @@ type ProjectForm = {
   starAction: string;
   starResult: string;
   markdownContent: string;
+  detailSlug: string;
   techStackCsv: string;
   githubUrl: string;
   demoUrl: string;
@@ -47,6 +49,7 @@ const initialForm: ProjectForm = {
   starAction: "",
   starResult: "",
   markdownContent: "",
+  detailSlug: "",
   techStackCsv: "",
   githubUrl: "",
   demoUrl: "",
@@ -81,6 +84,7 @@ export default function ProjectsAdminPage() {
       starAction: form.starAction,
       starResult: form.starResult,
       markdownContent: form.markdownContent,
+      detailSlug: form.detailSlug,
       detailBlogSlug: form.detailBlogSlug,
       techStack: csvToList(form.techStackCsv),
       githubUrl: form.githubUrl,
@@ -114,6 +118,7 @@ export default function ProjectsAdminPage() {
       starAction: item.starAction || "",
       starResult: item.starResult || "",
       markdownContent: item.markdownContent || "",
+      detailSlug: item.detailSlug || "",
       detailBlogSlug: item.detailBlogSlug || "",
       techStackCsv: listToCsv(item.techStack),
       githubUrl: item.githubUrl || "",
@@ -141,6 +146,7 @@ export default function ProjectsAdminPage() {
       <form className="mt-5 grid gap-3 md:grid-cols-2" onSubmit={onSubmit}>
         <input className="rounded-lg border border-slate-300 px-3 py-2" placeholder="项目名称" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
         <input className="rounded-lg border border-slate-300 px-3 py-2" placeholder="技术栈（逗号分隔）" value={form.techStackCsv} onChange={(e) => setForm({ ...form, techStackCsv: e.target.value })} />
+        <input className="rounded-lg border border-slate-300 px-3 py-2" placeholder="??????? ai-agent?" value={form.detailSlug} onChange={(e) => setForm({ ...form, detailSlug: e.target.value })} />
         <textarea className="min-h-20 rounded-lg border border-slate-300 px-3 py-2 md:col-span-2" placeholder="项目背景" value={form.context} onChange={(e) => setForm({ ...form, context: e.target.value })} />
         <textarea className="min-h-20 rounded-lg border border-slate-300 px-3 py-2" placeholder="STAR - 情境" value={form.starSituation} onChange={(e) => setForm({ ...form, starSituation: e.target.value })} />
         <textarea className="min-h-20 rounded-lg border border-slate-300 px-3 py-2" placeholder="STAR - 任务" value={form.starTask} onChange={(e) => setForm({ ...form, starTask: e.target.value })} />

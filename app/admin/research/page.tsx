@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { FormEvent, useEffect, useState } from "react";
 import { csvToList, listToCsv } from "@/lib/crud-helpers";
@@ -10,6 +10,7 @@ type ResearchItem = {
   role: string | null;
   dateRange: string | null;
   summary: string | null;
+  detailSlug: string | null;
   keywords: string[];
   tools: string[];
   resultVisualUrl: string | null;
@@ -22,6 +23,7 @@ type ResearchForm = {
   role: string;
   dateRange: string;
   summary: string;
+  detailSlug: string;
   keywordsCsv: string;
   toolsCsv: string;
   resultVisualUrl: string;
@@ -34,6 +36,7 @@ const initialForm: ResearchForm = {
   role: "",
   dateRange: "",
   summary: "",
+  detailSlug: "",
   keywordsCsv: "",
   toolsCsv: "",
   resultVisualUrl: "",
@@ -66,6 +69,7 @@ export default function ResearchAdminPage() {
       role: form.role,
       dateRange: form.dateRange,
       summary: form.summary,
+      detailSlug: form.detailSlug,
       keywords: csvToList(form.keywordsCsv),
       tools: csvToList(form.toolsCsv),
       resultVisualUrl: form.resultVisualUrl,
@@ -95,6 +99,7 @@ export default function ResearchAdminPage() {
       role: item.role || "",
       dateRange: item.dateRange || "",
       summary: item.summary || "",
+      detailSlug: item.detailSlug || "",
       keywordsCsv: listToCsv(item.keywords),
       toolsCsv: listToCsv(item.tools),
       resultVisualUrl: item.resultVisualUrl || "",
@@ -119,6 +124,7 @@ export default function ResearchAdminPage() {
       <form className="mt-5 grid gap-3 md:grid-cols-2" onSubmit={onSubmit}>
         <input className="rounded-lg border border-slate-300 px-3 py-2" placeholder="课题标题" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
         <input className="rounded-lg border border-slate-300 px-3 py-2" placeholder="你的角色" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} />
+        <input className="rounded-lg border border-slate-300 px-3 py-2" placeholder="??????? llm-paper?" value={form.detailSlug} onChange={(e) => setForm({ ...form, detailSlug: e.target.value })} />
         <input className="rounded-lg border border-slate-300 px-3 py-2" placeholder="时间范围" value={form.dateRange} onChange={(e) => setForm({ ...form, dateRange: e.target.value })} />
         <input className="rounded-lg border border-slate-300 px-3 py-2" placeholder="关键词（逗号分隔）" value={form.keywordsCsv} onChange={(e) => setForm({ ...form, keywordsCsv: e.target.value })} />
         <input className="rounded-lg border border-slate-300 px-3 py-2 md:col-span-2" placeholder="工具/设备（逗号分隔）" value={form.toolsCsv} onChange={(e) => setForm({ ...form, toolsCsv: e.target.value })} />
