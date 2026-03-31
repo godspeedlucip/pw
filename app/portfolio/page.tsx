@@ -1,4 +1,4 @@
-﻿import { PublicShell } from "@/components/public-shell";
+import { PublicShell } from "@/components/public-shell";
 import { getPortfolioData, getSiteSettings } from "@/lib/public-data";
 import { asStringArray } from "@/lib/public-format";
 import Link from "next/link";
@@ -70,9 +70,14 @@ export default async function PortfolioPage() {
                   {asStringArray(item.techStack).map((tech) => <span key={tech} className="tag">{tech}</span>)}
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <Link href={item.detailBlogSlug ? `/blog/${item.detailBlogSlug}` : `/portfolio/projects/${item.id}`} className="inline-flex nav-pill bg-white text-brand-700">
-                    {item.detailBlogSlug ? "查看关联博客" : "查看详情"}
+                  <Link href={`/portfolio/projects/${item.id}`} className="inline-flex nav-pill bg-white text-brand-700">
+                    查看详情
                   </Link>
+                  {item.detailBlogSlug ? (
+                    <Link href={`/blog/${item.detailBlogSlug}`} className="inline-flex nav-pill bg-white text-brand-700">
+                      查看关联博客
+                    </Link>
+                  ) : null}
                   {item.githubUrl ? <a className="inline-flex nav-pill bg-white" href={item.githubUrl}>GitHub</a> : null}
                 </div>
               </div>
