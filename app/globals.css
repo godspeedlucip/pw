@@ -248,3 +248,36 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+.markdown-content .mermaid-diagram,
+.markdown-content .mermaid-loading,
+.markdown-content .mermaid-error {
+  margin: 1rem 0;
+  border: 1px solid #dbe8fb;
+  border-radius: 0.7rem;
+  background: #ffffff;
+  padding: 0.8rem;
+}
+
+.markdown-content .mermaid-diagram {
+  overflow-x: auto;
+}
+
+.markdown-content .mermaid-diagram svg {
+  min-width: 580px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.markdown-content .mermaid-loading {
+  color: #38567d;
+  font-size: 0.92rem;
+}
+
+.markdown-content .mermaid-error p {
+  margin: 0 0 0.6rem;
+  color: #b42318;
+  font-weight: 600;
+}
